@@ -1,0 +1,177 @@
+<%= form_for(@voter) do |f| %>
+  <% if @voter.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@voter.errors.count, "error") %> prohibited this voter from being saved:</h2>
+
+      <ul>
+      <% @voter.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :un %><br>
+    <%= f.text_field :un %>
+  </div>
+  <div class="field">
+    <%= f.label :party %><br>
+    <%= f.text_field :party %>
+  </div>
+  <div class="field">
+    <%= f.label :dp %><br>
+    <%= f.text_field :dp %>
+  </div>
+  <div class="field">
+    <%= f.label :last_name %><br>
+    <%= f.text_field :last_name %>
+  </div>
+  <div class="field">
+    <%= f.label :first_name %><br>
+    <%= f.text_field :first_name %>
+  </div>
+  <div class="field">
+    <%= f.label :middle_name %><br>
+    <%= f.text_field :middle_name %>
+  </div>
+  <div class="field">
+    <%= f.label :suffix_name %><br>
+    <%= f.text_field :suffix_name %>
+  </div>
+  <div class="field">
+    <%= f.label :ascension %><br>
+    <%= f.text_field :ascension %>
+  </div>
+  <div class="field">
+    <%= f.label :reg_date %><br>
+    <%= f.date_select :reg_date %>
+  </div>
+  <div class="field">
+    <%= f.label :condition_date %><br>
+    <%= f.date_select :condition_date %>
+  </div>
+  <div class="field">
+    <%= f.label :org_reg_date %><br>
+    <%= f.date_select :org_reg_date %>
+  </div>
+  <div class="field">
+    <%= f.label :dist_date %><br>
+    <%= f.date_select :dist_date %>
+  </div>
+  <div class="field">
+    <%= f.label :residence_address %><br>
+    <%= f.text_field :residence_address %>
+  </div>
+  <div class="field">
+    <%= f.label :residence_city %><br>
+    <%= f.text_field :residence_city %>
+  </div>
+  <div class="field">
+    <%= f.label :residence_zip %><br>
+    <%= f.text_field :residence_zip %>
+  </div>
+  <div class="field">
+    <%= f.label :mailing_address1 %><br>
+    <%= f.text_field :mailing_address1 %>
+  </div>
+  <div class="field">
+    <%= f.label :mailing_address2 %><br>
+    <%= f.text_field :mailing_address2 %>
+  </div>
+  <div class="field">
+    <%= f.label :mailing_address3 %><br>
+    <%= f.text_field :mailing_address3 %>
+  </div>
+  <div class="field">
+    <%= f.label :mailing_city %><br>
+    <%= f.text_field :mailing_city %>
+  </div>
+  <div class="field">
+    <%= f.label :mailing_state %><br>
+    <%= f.text_field :mailing_state %>
+  </div>
+  <div class="field">
+    <%= f.label :mailing_zip %><br>
+    <%= f.text_field :mailing_zip %>
+  </div>
+  <div class="field">
+    <%= f.label :mailing_country %><br>
+    <%= f.text_field :mailing_country %>
+  </div>
+  <div class="field">
+    <%= f.label :gender %><br>
+    <%= f.text_field :gender %>
+  </div>
+  <div class="field">
+    <%= f.label :cc %><br>
+    <%= f.text_field :cc %>
+  </div>
+  <div class="field">
+    <%= f.label :vh1 %><br>
+    <%= f.text_field :vh1 %>
+  </div>
+  <div class="field">
+    <%= f.label :vh2 %><br>
+    <%= f.text_field :vh2 %>
+  </div>
+  <div class="field">
+    <%= f.label :vh3 %><br>
+    <%= f.text_field :vh3 %>
+  </div>
+  <div class="field">
+    <%= f.label :vh4 %><br>
+    <%= f.text_field :vh4 %>
+  </div>
+  <div class="field">
+    <%= f.label :vh5 %><br>
+    <%= f.text_field :vh5 %>
+  </div>
+  <div class="field">
+    <%= f.label :vh6 %><br>
+    <%= f.text_field :vh6 %>
+  </div>
+  <div class="field">
+    <%= f.label :vh7 %><br>
+    <%= f.text_field :vh7 %>
+  </div>
+  <div class="field">
+    <%= f.label :vh8 %><br>
+    <%= f.text_field :vh8 %>
+  </div>
+  <div class="field">
+    <%= f.label :vh9 %><br>
+    <%= f.text_field :vh9 %>
+  </div>
+  <div class="field">
+    <%= f.label :vh10 %><br>
+    <%= f.text_field :vh10 %>
+  </div>
+  <div class="field">
+    <%= f.label :vh11 %><br>
+    <%= f.text_field :vh11 %>
+  </div>
+  <div class="field">
+    <%= f.label :vh12 %><br>
+    <%= f.text_field :vh12 %>
+  </div>
+  <div class="field">
+    <%= f.label :vh13 %><br>
+    <%= f.text_field :vh13 %>
+  </div>
+  <div class="field">
+    <%= f.label :vh14 %><br>
+    <%= f.text_field :vh14 %>
+  </div>
+  <div class="field">
+    <%= f.label :vh15 %><br>
+    <%= f.text_field :vh15 %>
+  </div>
+  <div class="field">
+    <%= f.label :vh16 %><br>
+    <%= f.text_field :vh16 %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

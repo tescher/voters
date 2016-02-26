@@ -1,0 +1,105 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Voters</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Un</th>
+      <th>Party</th>
+      <th>Dp</th>
+      <th>Last name</th>
+      <th>First name</th>
+      <th>Middle name</th>
+      <th>Suffix name</th>
+      <th>Ascension</th>
+      <th>Reg date</th>
+      <th>Condition date</th>
+      <th>Org reg date</th>
+      <th>Dist date</th>
+      <th>Residence address</th>
+      <th>Residence city</th>
+      <th>Residence zip</th>
+      <th>Mailing address1</th>
+      <th>Mailing address2</th>
+      <th>Mailing address3</th>
+      <th>Mailing city</th>
+      <th>Mailing state</th>
+      <th>Mailing zip</th>
+      <th>Mailing country</th>
+      <th>Gender</th>
+      <th>Cc</th>
+      <th>Vh1</th>
+      <th>Vh2</th>
+      <th>Vh3</th>
+      <th>Vh4</th>
+      <th>Vh5</th>
+      <th>Vh6</th>
+      <th>Vh7</th>
+      <th>Vh8</th>
+      <th>Vh9</th>
+      <th>Vh10</th>
+      <th>Vh11</th>
+      <th>Vh12</th>
+      <th>Vh13</th>
+      <th>Vh14</th>
+      <th>Vh15</th>
+      <th>Vh16</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @voters.each do |voter| %>
+      <tr>
+        <td><%= voter.un %></td>
+        <td><%= voter.party %></td>
+        <td><%= voter.dp %></td>
+        <td><%= voter.last_name %></td>
+        <td><%= voter.first_name %></td>
+        <td><%= voter.middle_name %></td>
+        <td><%= voter.suffix_name %></td>
+        <td><%= voter.ascension %></td>
+        <td><%= voter.reg_date %></td>
+        <td><%= voter.condition_date %></td>
+        <td><%= voter.org_reg_date %></td>
+        <td><%= voter.dist_date %></td>
+        <td><%= voter.residence_address %></td>
+        <td><%= voter.residence_city %></td>
+        <td><%= voter.residence_zip %></td>
+        <td><%= voter.mailing_address1 %></td>
+        <td><%= voter.mailing_address2 %></td>
+        <td><%= voter.mailing_address3 %></td>
+        <td><%= voter.mailing_city %></td>
+        <td><%= voter.mailing_state %></td>
+        <td><%= voter.mailing_zip %></td>
+        <td><%= voter.mailing_country %></td>
+        <td><%= voter.gender %></td>
+        <td><%= voter.cc %></td>
+        <td><%= voter.vh1 %></td>
+        <td><%= voter.vh2 %></td>
+        <td><%= voter.vh3 %></td>
+        <td><%= voter.vh4 %></td>
+        <td><%= voter.vh5 %></td>
+        <td><%= voter.vh6 %></td>
+        <td><%= voter.vh7 %></td>
+        <td><%= voter.vh8 %></td>
+        <td><%= voter.vh9 %></td>
+        <td><%= voter.vh10 %></td>
+        <td><%= voter.vh11 %></td>
+        <td><%= voter.vh12 %></td>
+        <td><%= voter.vh13 %></td>
+        <td><%= voter.vh14 %></td>
+        <td><%= voter.vh15 %></td>
+        <td><%= voter.vh16 %></td>
+        <td><%= link_to 'Show', voter %></td>
+        <td><%= link_to 'Edit', edit_voter_path(voter) %></td>
+        <td><%= link_to 'Destroy', voter, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Voter', new_voter_path %>
