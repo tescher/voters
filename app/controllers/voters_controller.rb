@@ -36,14 +36,14 @@ class VotersController < ApplicationController
       where_clause = where_clause.length > 0 ? where_clause + " AND " : where_clause
       where_clause += "elections_voters.election_id IN (#{voted_in_ids.join(',')})"
     end
-    if !params[:not_voted_in_ids].blank? && (params[:not_voted_in_ids].count > 0)
-      not_voted_in_ids = params[:not_voted_in_ids]
-      if !(joins_clause.include? :elections_voters)
-        joins_clause << :elections_voters
-      end
-      where_clause = where_clause.length > 0 ? where_clause + " AND " : where_clause
-      where_clause += "elections_voters.election_id NOT IN (#{not_voted_in_ids.join(',')})"
-    end
+#    if !params[:not_voted_in_ids].blank? && (params[:not_voted_in_ids].count > 0)
+#      not_voted_in_ids = params[:not_voted_in_ids]
+#      if !(joins_clause.include? :elections_voters)
+#        joins_clause << :elections_voters
+#     end
+#      where_clause = where_clause.length > 0 ? where_clause + " AND " : where_clause
+#      where_clause += "elections_voters.election_id NOT IN (#{not_voted_in_ids.join(',')})"
+#    end
     if !params[:vote_method_ids].blank? && (params[:vote_method_ids].count > 0)
       vote_method_ids = params[:vote_method_ids]
       if !(joins_clause.include? :elections_voters)
@@ -53,6 +53,27 @@ class VotersController < ApplicationController
       where_clause += "elections_voters.vote_method_id IN (#{vote_method_ids.join(',')})"
     end
     @voters = Voter.select("DISTINCT(voters.id), voters.*").joins(joins_clause).where(where_clause).order(:last_name, :first_name)
+
+    if !params[:not_voted_in_ids].blank? && (params[:not_voted_in_ids].count > 0)
+      @voters = @voters.to_a
+      @voters_filtered = []
+      @voters.each do |v|
+        elections_voters = ElectionsVoter.where(voter_id: v.id)
+        found = false
+        elections_voters.each do |ev|
+          puts ev.election_id
+          if (params[:not_voted_in_ids].include? ev.election_id.to_s)
+            found = true
+            puts "deleted #{v.id}"
+            break
+          end
+        end
+        if !found
+          @voters_filtered << v
+        end
+      end
+      @voters = @voters_filtered
+    end
 
     respond_to do |format|
       format.html {
