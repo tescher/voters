@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160226224729) do
+ActiveRecord::Schema.define(version: 20160226233931) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,13 +24,21 @@ ActiveRecord::Schema.define(version: 20160226224729) do
   end
 
   create_table "elections_voters", id: false, force: :cascade do |t|
-    t.integer "election_id", null: false
-    t.integer "voter_id",    null: false
+    t.integer "election_id",    null: false
+    t.integer "voter_id",       null: false
     t.string  "vote_method"
+    t.integer "vote_method_id"
   end
 
   add_index "elections_voters", ["election_id", "voter_id"], name: "index_elections_voters_on_election_id_and_voter_id", using: :btree
   add_index "elections_voters", ["voter_id", "election_id"], name: "index_elections_voters_on_voter_id_and_election_id", using: :btree
+
+  create_table "vote_methods", force: :cascade do |t|
+    t.string   "name"
+    t.string   "code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "voters", force: :cascade do |t|
     t.string   "un"

@@ -1,0 +1,50 @@
+<%= form_tag(voters_path, method: "get") do %>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-5 col-md-offset-1">
+
+          <div class="row">
+            <div class="col-md-2">
+              <%= label_tag "Voted In"  %><br>
+            </div>
+            <div class="col-md-8">
+              <%= select_tag :voted_in_ids, option_from_collection_for_select(Election.all, :id, :name), { :multiple => true, class: "form-control"}  %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2">
+              <%= label_tag "Did Not Vote In" %><br>
+            </div>
+            <div class="col-md-8">
+              <%= select_tag :not_voted_in_ids, option_from_collection_for_select(Election.all, :id, :name), { :multiple => true, class: "form-control"}  %>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-md-5">
+
+          <div class="row">
+            <div class="col-md-2">
+              <%= label_tag "Vote Method" %><br>
+            </div>
+            <div class="col-md-8">
+              <%= select_tag :vote_method_ids, option_from_collection_for_select(VoteMethod.all, :id, :name), { :multiple => true, class: "form-control"}  %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-md-10 col-md-offset-1">
+        <div class="actions pull-right">
+          <%= submit_tag "Search", class: "btn btn-primary" %>
+          <%= link_to 'Back', root_path, class: "btn btn-primary" %>
+        </div>
+      </div>
+    </div>
+
+<% end %>
+
+

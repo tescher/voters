@@ -1,9 +1,12 @@
 Rails.application.routes.draw do
+  resources :vote_methods
+
   get 'home/index'
 
   resources :voters do
     collection do
       get 'search'
+      get 'convert'
     end
   end
 
