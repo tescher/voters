@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+          xmlns:o="urn:schemas-microsoft-com:office:office"
+          xmlns:x="urn:schemas-microsoft-com:office:excel"
+          xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+          xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">UN</Data></Cell>
+        <Cell><Data ss:Type="String">PARTY</Data></Cell>
+        <Cell><Data ss:Type="String">D/P</Data></Cell>
+        <Cell><Data ss:Type="String">LAST NAME</Data></Cell>
+        <Cell><Data ss:Type="String">FIRST NAME</Data></Cell>
+        <Cell><Data ss:Type="String">MIDDLE NAME</Data></Cell>
+        <Cell><Data ss:Type="String">SUFFIX NAME</Data></Cell>
+        <Cell><Data ss:Type="String">ASCENSION #</Data></Cell>
+        <Cell><Data ss:Type="String">REG DATE</Data></Cell>
+        <Cell><Data ss:Type="String">CONDITION DATE</Data></Cell>
+        <Cell><Data ss:Type="String">ORG REG DATE</Data></Cell>
+        <Cell><Data ss:Type="String">DIST DATE</Data></Cell>
+        <Cell><Data ss:Type="String">RESIDENCE ADDRESS</Data></Cell>
+        <Cell><Data ss:Type="String">RESIDENCE CITY</Data></Cell>
+        <Cell><Data ss:Type="String">RESIDENCE ZIP</Data></Cell>
+        <Cell><Data ss:Type="String">MAILING ADDRESS 1</Data></Cell>
+        <Cell><Data ss:Type="String">MAILING ADDRESS 2</Data></Cell>
+        <Cell><Data ss:Type="String">MAILING ADDRESS 3</Data></Cell>
+        <Cell><Data ss:Type="String">MAILING CITY</Data></Cell>
+        <Cell><Data ss:Type="String">MAILING STATE</Data></Cell>
+        <Cell><Data ss:Type="String">MAILING ZIP</Data></Cell>
+        <Cell><Data ss:Type="String">MAILING COUNTRY</Data></Cell>
+        <Cell><Data ss:Type="String">GENDER</Data></Cell>
+        <Cell><Data ss:Type="String">CC</Data></Cell>
+        <Cell><Data ss:Type="String">ELECTION CODES</Data></Cell>
+        <% (1..16).each do |i|
+          field = "VH#{i}" %>
+            <Cell><Data ss:Type="String"><%= field %></Data></Cell>
+        <% end %>
+      </Row>
+      <% @voters.each do |voter| %>
+          <Row>
+            <Cell><Data ss:Type="String"><%= voter.un %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= voter.party %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= voter.dp %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= voter.last_name %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= voter.first_name %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= voter.middle_name %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= voter.suffix_name %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= voter.ascension %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= voter.reg_date %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= voter.condition_date %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= voter.org_reg_date %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= voter.dist_date %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= voter.residence_address %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= voter.residence_city %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= voter.residence_zip %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= voter.mailing_address1 %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= voter.mailing_address2 %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= voter.mailing_address3 %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= voter.mailing_city %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= voter.mailing_state %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= voter.mailing_zip %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= voter.mailing_country %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= voter.gender %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= voter.cc %></Data></Cell>
+            <% (1..16).each do |i|
+              field = "vh#{i}"
+              if (!voter.send(field).blank?)
+                cell_data = voter.send(field) %>
+                    <Cell><Data ss:Type="String"><%= cell_data %></Data></Cell>
+           <% end
+            end %>
+          </Row>
+      <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>

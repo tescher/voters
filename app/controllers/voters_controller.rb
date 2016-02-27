@@ -21,8 +21,13 @@ class VotersController < ApplicationController
   def edit
   end
 
-  # GET /voters/search
+  def search_form
+    render "search"
+  end
+
+  # POST /voters/search
   def search
+    request.format = :xls
     where_clause = ""
     joins_clause = []
     if !params[:voted_in_ids].blank? && (params[:voted_in_ids].count > 0)
@@ -40,16 +45,24 @@ class VotersController < ApplicationController
       where_clause += "elections_voters.election_id NOT IN (#{not_voted_in_ids.join(',')})"
     end
     if !params[:vote_method_ids].blank? && (params[:vote_method_ids].count > 0)
-      not_voted_in_ids = params[:vote_method_ids]
+      vote_method_ids = params[:vote_method_ids]
       if !(joins_clause.include? :elections_voters)
         joins_clause << :elections_voters
       end
       where_clause = where_clause.length > 0 ? where_clause + " AND " : where_clause
       where_clause += "elections_voters.vote_method_id IN (#{vote_method_ids.join(',')})"
     end
-    @voters = Voters.select("DISTINCT(voters.id), voters.*").joins(joins_clause).where(where_clause).order(:last_name, :first_name)
-    response.headers['Content-Disposition'] = 'attachment; filename="voters.xls"'
-    render "search.xls"
+    @voters = Voter.select("DISTINCT(voters.id), voters.*").joins(joins_clause).where(where_clause).order(:last_name, :first_name)
+
+    respond_to do |format|
+      format.html {
+        render :index
+      }
+      format.xls {
+        response.headers['Content-Disposition'] = 'attachment; filename="voters.xls"'
+        render "search.xls"
+      }
+    end
   end
 
   # Get /voters/convert

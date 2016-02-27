@@ -5,7 +5,8 @@ Rails.application.routes.draw do
 
   resources :voters do
     collection do
-      get 'search'
+      get 'search' => "voters#search_form"
+      post 'search' => "voters#search"
       get 'convert'
     end
   end
