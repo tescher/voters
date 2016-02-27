@@ -26,4 +26,9 @@ test:
 
 production:
   <<: *default
-  database: db/production.sqlite3
+  encoding: unicode
+  database: <%= ENV["RAILS_DB_DATABASE"] %>
+  username: <%= ENV["RAILS_DB_USER"] %>
+  password: <%= ENV["RAILS_DB_PASSWORD"] %>
+  port: <%= ENV["RAILS_DB_PORT"] %>
+  host: localhost
