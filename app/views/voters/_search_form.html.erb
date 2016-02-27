@@ -8,20 +8,20 @@
               <%= label_tag "Voted In"  %><br>
             </div>
             <div class="col-md-8">
-              <%= select_tag :voted_in_ids, options_from_collection_for_select(Election.all, :id, :name), { :multiple => true, class: "form-control"}  %>
+              <%= select_tag :voted_in_ids, options_from_collection_for_select(Election.order(:name), :id, :name), { :multiple => true, class: "form-control"}  %>
             </div>
           </div>
+          <br/><br/>
           <div class="row">
             <div class="col-md-2">
               <%= label_tag "Did Not Vote In" %><br>
             </div>
             <div class="col-md-8">
-              <%= select_tag :not_voted_in_ids, options_from_collection_for_select(Election.all, :id, :name), { :multiple => true, class: "form-control"}  %>
+              <%= select_tag :not_voted_in_ids, options_from_collection_for_select(Election.order(:name), :id, :name), { :multiple => true, class: "form-control"}  %>
             </div>
           </div>
 
         </div>
-
         <div class="col-md-5">
 
           <div class="row">
@@ -29,7 +29,7 @@
               <%= label_tag "Vote Method" %><br>
             </div>
             <div class="col-md-8">
-              <%= select_tag :vote_method_ids, options_from_collection_for_select(VoteMethod.all, :id, :name), { :multiple => true, class: "form-control"}  %>
+              <%= select_tag :vote_method_ids, options_from_collection_for_select(VoteMethod.order(:name), :id, :name), { :multiple => true, class: "form-control"}  %>
             </div>
           </div>
         </div>
