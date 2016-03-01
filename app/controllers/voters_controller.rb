@@ -29,12 +29,17 @@ class VotersController < ApplicationController
   def search
     request.format = :xls
     where_clause = ""
-    joins_clause = []
-    if !params[:voted_in_ids].blank? && (params[:voted_in_ids].count > 0)
-      voted_in_ids = params[:voted_in_ids]
-      joins_clause << :elections_voters
-      where_clause = where_clause.length > 0 ? where_clause + " AND " : where_clause
-      where_clause += "elections_voters.election_id IN (#{voted_in_ids.join(',')})"
+    if !params[:voted_in_any_ids].blank? && (params[:voted_in_any_ids].count > 0)
+      voted_in_ids = params[:voted_in_any_ids]
+      where_clause = "elections_voters.election_id IN (#{voted_in_ids.join(',')})"
+      @voters_in_any = Voter.select("voters.*").joins(:elections_voters).where(where_clause)
+    end
+    if !params[:voted_in_all_ids].blank? && (params[:voted_in_all_ids].count > 0)
+      voted_in_ids = params[:voted_in_all_ids]
+      election_count = params[:voted_in_x].to_i>0 ?  params[:voted_in_x].to_i : params[:voted_in_all_ids].count
+      puts "Election count: "+election_count.to_s
+      where_clause = "elections_voters.election_id IN (#{voted_in_ids.join(',')})"
+      @voters_in_all = Voter.select("voters.*").joins(:elections_voters).where(where_clause).group("voters.id").having("COUNT(DISTINCT election_id) >= #{election_count}")
     end
 #    if !params[:not_voted_in_ids].blank? && (params[:not_voted_in_ids].count > 0)
 #      not_voted_in_ids = params[:not_voted_in_ids]
@@ -46,13 +51,34 @@ class VotersController < ApplicationController
 #    end
     if !params[:vote_method_ids].blank? && (params[:vote_method_ids].count > 0)
       vote_method_ids = params[:vote_method_ids]
-      if !(joins_clause.include? :elections_voters)
-        joins_clause << :elections_voters
-      end
-      where_clause = where_clause.length > 0 ? where_clause + " AND " : where_clause
-      where_clause += "elections_voters.vote_method_id IN (#{vote_method_ids.join(',')})"
+      where_clause = "elections_voters.vote_method_id IN (#{vote_method_ids.join(',')})"
+      @voters_method = Voter.select("voters.*").joins(:elections_voters).where(where_clause)
     end
-    @voters = Voter.select("DISTINCT(voters.id), voters.*").joins(joins_clause).where(where_clause).order(:last_name, :first_name)
+
+    @voters = ""
+
+    if (!@voters_in_any.blank?)
+      @voters = @voters_in_any.to_sql
+    end
+
+    if (!@voters_in_all.blank?)
+      if (!@voters.blank?)
+        @voters = "("+@voters+") INTERSECT "
+      end
+      @voters += "("+@voters_in_all.to_sql+")"
+    end
+
+    if (!@voters_method.blank?)
+      if (!@voters.blank?)
+        @voters = "("+@voters+") INTERSECT "
+      end
+      @voters += "("+@voters_method.to_sql+")"
+
+    end
+
+    puts @voters
+
+    @voters = Voter.find_by_sql(@voters)
 
     if !params[:not_voted_in_ids].blank? && (params[:not_voted_in_ids].count > 0)
       @voters = @voters.to_a
