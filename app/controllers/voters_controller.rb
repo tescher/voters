@@ -32,14 +32,21 @@ class VotersController < ApplicationController
     if !params[:voted_in_any_ids].blank? && (params[:voted_in_any_ids].count > 0)
       voted_in_ids = params[:voted_in_any_ids]
       where_clause = "elections_voters.election_id IN (#{voted_in_ids.join(',')})"
-      @voters_in_any = Voter.select("voters.*").joins(:elections_voters).where(where_clause)
+      if !params[:vote_method_ids].blank? && (params[:vote_method_ids].count > 0)
+        vote_method_ids = params[:vote_method_ids]
+        where_clause += " AND elections_voters.vote_method_id IN (#{vote_method_ids.join(',')})"
+      end
+      voters_in_any = Voter.select("voters.*").joins(:elections_voters).where(where_clause).distinct.to_sql
     end
     if !params[:voted_in_all_ids].blank? && (params[:voted_in_all_ids].count > 0)
       voted_in_ids = params[:voted_in_all_ids]
       election_count = params[:voted_in_x].to_i>0 ?  params[:voted_in_x].to_i : params[:voted_in_all_ids].count
-      puts "Election count: "+election_count.to_s
       where_clause = "elections_voters.election_id IN (#{voted_in_ids.join(',')})"
-      @voters_in_all = Voter.select("voters.*").joins(:elections_voters).where(where_clause).group("voters.id").having("COUNT(DISTINCT election_id) >= #{election_count}")
+      if !params[:vote_method_ids].blank? && (params[:vote_method_ids].count > 0)
+        vote_method_ids = params[:vote_method_ids]
+        where_clause += " AND elections_voters.vote_method_id IN (#{vote_method_ids.join(',')})"
+      end
+      voters_in_all = Voter.select("voters.*").joins(:elections_voters).where(where_clause).group("voters.id").having("COUNT(DISTINCT election_id) >= #{election_count}").to_sql
     end
 #    if !params[:not_voted_in_ids].blank? && (params[:not_voted_in_ids].count > 0)
 #      not_voted_in_ids = params[:not_voted_in_ids]
@@ -49,56 +56,57 @@ class VotersController < ApplicationController
 #      where_clause = where_clause.length > 0 ? where_clause + " AND " : where_clause
 #      where_clause += "elections_voters.election_id NOT IN (#{not_voted_in_ids.join(',')})"
 #    end
-    if !params[:vote_method_ids].blank? && (params[:vote_method_ids].count > 0)
+    if (voters_in_any.blank? && voters_in_all.blank?) && !params[:vote_method_ids].blank? && (params[:vote_method_ids].count > 0)
       vote_method_ids = params[:vote_method_ids]
       where_clause = "elections_voters.vote_method_id IN (#{vote_method_ids.join(',')})"
-      @voters_method = Voter.select("voters.*").joins(:elections_voters).where(where_clause)
+      voters_method = Voter.select("voters.*").joins(:elections_voters).where(where_clause).distinct.to_sql
     end
 
     @voters = ""
 
-    if (!@voters_in_any.blank?)
-      @voters = @voters_in_any.to_sql
+    if (!voters_in_any.blank?)
+      @voters = voters_in_any
     end
 
-    if (!@voters_in_all.blank?)
+    if (!voters_in_all.blank?)
       if (!@voters.blank?)
         @voters = "("+@voters+") INTERSECT "
       end
-      @voters += "("+@voters_in_all.to_sql+")"
+      @voters += "("+voters_in_all+")"
     end
 
-    if (!@voters_method.blank?)
-      if (!@voters.blank?)
-        @voters = "("+@voters+") INTERSECT "
-      end
-      @voters += "("+@voters_method.to_sql+")"
-
+    if (!voters_method.blank?)
+      @voters += "("+voters_method+")"
     end
 
     puts @voters
 
-    @voters = Voter.find_by_sql(@voters)
+    if @voters.blank?
+      @voters = []
+    else
 
-    if !params[:not_voted_in_ids].blank? && (params[:not_voted_in_ids].count > 0)
-      @voters = @voters.to_a
-      @voters_filtered = []
-      @voters.each do |v|
-        elections_voters = ElectionsVoter.where(voter_id: v.id)
-        found = false
-        elections_voters.each do |ev|
-          puts ev.election_id
-          if (params[:not_voted_in_ids].include? ev.election_id.to_s)
-            found = true
-            puts "deleted #{v.id}"
-            break
+      @voters = Voter.find_by_sql(@voters)
+
+      if !params[:not_voted_in_ids].blank? && (params[:not_voted_in_ids].count > 0)
+        @voters = @voters.to_a
+        @voters_filtered = []
+        @voters.each do |v|
+          elections_voters = ElectionsVoter.where(voter_id: v.id)
+          found = false
+          elections_voters.each do |ev|
+            puts ev.election_id
+            if (params[:not_voted_in_ids].include? ev.election_id.to_s)
+              found = true
+              puts "deleted #{v.id}"
+              break
+            end
+          end
+          if !found
+            @voters_filtered << v
           end
         end
-        if !found
-          @voters_filtered << v
-        end
+        @voters = @voters_filtered
       end
-      @voters = @voters_filtered
     end
 
     respond_to do |format|
