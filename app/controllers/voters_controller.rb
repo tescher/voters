@@ -123,18 +123,17 @@ class VotersController < ApplicationController
   # Get /voters/convert
   def convert
     @voters = Voter.all
+    ElectionsVoter.delete_all
     @voters.each do |v|
-      if (ElectionsVoter.where("voter_id = '#{v.id}'").count < 1)
-        (1..16).each do |i|
-          field = "vh#{i}"
-          if (!v.send(field).blank?)
-            election_code = v.send(field)
-            vote_method = VoteMethod.find_by_code(election_code.split(" ")[1])
-            election_code = election_code.split(" ")[0]
-            election = Election.find_by_code(election_code)
-            election_voter = ElectionsVoter.new(election_id: election.id, voter_id: v.id, vote_method_id: vote_method.id)
-            election_voter.save!
-          end
+      (1..16).each do |i|
+        field = "vh#{i}"
+        if (!v.send(field).blank?)
+          election_code = v.send(field)
+          vote_method = VoteMethod.find_by_code(election_code.split(" ")[1])
+          election_code = election_code.split(" ")[0]
+          election = Election.find_by_code(election_code)
+          election_voter = ElectionsVoter.new(election_id: election.id, voter_id: v.id, vote_method_id: vote_method.id)
+          election_voter.save!
         end
       end
     end
