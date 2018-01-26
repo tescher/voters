@@ -7,6 +7,7 @@
   <Worksheet ss:Name="Sheet1">
     <Table>
       <Row>
+        <Cell><Data ss:Type="String">MSB District</Data></Cell>
         <Cell><Data ss:Type="String">UN</Data></Cell>
         <Cell><Data ss:Type="String">PARTY</Data></Cell>
         <Cell><Data ss:Type="String">D/P</Data></Cell>
@@ -31,7 +32,6 @@
         <Cell><Data ss:Type="String">MAILING COUNTRY</Data></Cell>
         <Cell><Data ss:Type="String">GENDER</Data></Cell>
         <Cell><Data ss:Type="String">CC</Data></Cell>
-        <Cell><Data ss:Type="String">ELECTION CODES</Data></Cell>
         <% (1..16).each do |i|
           field = "VH#{i}" %>
             <Cell><Data ss:Type="String"><%= field %></Data></Cell>
@@ -39,6 +39,7 @@
       </Row>
       <% @voters.each do |voter| %>
           <Row>
+            <Cell><Data ss:Type="String"><%= voter.msbid %></Data></Cell>
             <Cell><Data ss:Type="String"><%= voter.un %></Data></Cell>
             <Cell><Data ss:Type="String"><%= voter.party %></Data></Cell>
             <Cell><Data ss:Type="String"><%= voter.dp %></Data></Cell>
