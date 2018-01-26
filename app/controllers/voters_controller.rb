@@ -131,7 +131,7 @@ class VotersController < ApplicationController
           election_code = v.send(field)
           vote_method = VoteMethod.find_by_code(election_code.split(" ")[1])
           election_code = election_code.split(" ")[0]
-          election = Election.find_by_code(election_code)
+          election = Election.create_with(name: election_code).find_or_create_by(code: election_code)
           election_voter = ElectionsVoter.new(election_id: election.id, voter_id: v.id, vote_method_id: vote_method.id)
           election_voter.save!
         end
