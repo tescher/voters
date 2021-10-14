@@ -1,3 +1,3 @@
-class VoteMethod < ActiveRecord::Base
+class VoteMethod < ApplicationRecord
   has_many :election_voters
 end

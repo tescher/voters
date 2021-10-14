@@ -130,9 +130,27 @@ class VotersController < ApplicationController
         if (!v.send(field).blank?)
           election_code = v.send(field)
           vote_method = VoteMethod.find_by_code(election_code.split(" ")[1])
+          puts "Vote method #{vote_method}"
           election_code = election_code.split(" ")[0]
+          puts "Election code #{election_code}"
           election = Election.create_with(name: election_code).find_or_create_by(code: election_code)
-          election_voter = ElectionsVoter.new(election_id: election.id, voter_id: v.id, vote_method_id: vote_method.id)
+          election.save!
+          p election.errors.details
+          v.save!
+          puts "Election id after create #{election.id}"
+          puts "Voter id #{v.id}"
+          puts "Vote method id #{vote_method.id}"
+          if Voter.where(id: v.id).nil?
+            puts "Voter missing"
+          end
+          if Election.where(id: election.id).nil?
+            puts "Election missing"
+          end
+          if VoteMethod.where(id: vote_method.id).nil?
+            puts "Method missing"
+          end
+          election_voter = ElectionsVoter.create!(election_id: election.id, voter_id: v.id, vote_method_id: vote_method.id)
+          p election_voter
           election_voter.save!
         end
       end
