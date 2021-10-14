@@ -175,7 +175,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   listen
-  pg (= 0.20.0)
+  pg
   rails (= 5.2.6)
   sass-rails
   sassc (= 2.1.0)
