@@ -15,7 +15,7 @@ development:
   username: postgres
   password: Mariann1
 
-# Warning: The database defined as "test" will be erased and
+# Warning: The database devi startfined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
@@ -27,8 +27,8 @@ test:
 production:
   <<: *default
   encoding: unicode
-  database: <%= ENV["RAILS_DB_DATABASE"] %>
-  username: <%= ENV["RAILS_DB_USER"] %>
-  password: <%= ENV["RAILS_DB_PASSWORD"] %>
-  port: <%= ENV["RAILS_DB_PORT"] %>
+  database: <%= ENV["RAILS_DB_DATABASE"] || 'voters' %>
+  username: <%= ENV["RAILS_DB_USER"] || 'voters_user' %>
+  password: <%= ENV["RAILS_DB_PASSWORD" || 'AOsgV2FmDRSrE97n'] %>
+  port: <%= ENV["RAILS_DB_PORT"] || 5432 %>
   host: localhost
