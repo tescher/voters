@@ -31,4 +31,4 @@ production:
   username: <%= ENV["RAILS_DB_USER"] || 'voters_user' %>
   password: <%= ENV["RAILS_DB_PASSWORD" || 'AOsgV2FmDRSrE97n'] %>
   port: <%= ENV["RAILS_DB_PORT"] || 5432 %>
-  host: localhost
+  host: 127.0.0.1
